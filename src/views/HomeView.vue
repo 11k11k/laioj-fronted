@@ -1,18 +1,29 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <MdEditor :value="mdValue" :handleChange="mdOnChange" />
+    <!-- 使用父组件进行控制组件的参数，例如value跟方法handleChange
+    然后进入到子组件中编辑
+    -->
+    <CodeEditor
+      :value="codeValue"
+      :handleChange="codeOnChange"
+    ></CodeEditor>
   </div>
 </template>
+<script setup lang="ts">
+import CodeEditor from '@/components/CodeEditor.vue'
+import MdEditor from '@/components/MdEditor.vue'
+import { ref } from 'vue'
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+const mdValue = ref('')
+const codeValue = ref('')
 
-export default defineComponent({
-  name: "HomeView",
-  components: {
-    HelloWorld,
-  },
-});
+const mdOnChange = (v: string) => {
+  mdValue.value = v
+  console.log(v)
+}
+const codeOnChange = (v: string) => {
+  codeValue.value = v
+  console.log(v)
+}
 </script>

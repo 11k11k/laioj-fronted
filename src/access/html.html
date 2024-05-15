@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Example</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 设置鼠标初始位置为页面中心
+        var mouseX = window.innerWidth / 2;
+        var mouseY = window.innerHeight / 2;
+
+        // 监听鼠标移动事件
+        document.addEventListener('mousemove', onMouseMove, false);
+
+        function onMouseMove(event) {
+            mouseX = event.clientX;
+            mouseY = event.clientY;
+        }
+
+        // 创建六个不同颜色的材质
+        var materials = [
+            new THREE.MeshBasicMaterial({ color: 0xff0000 }), // 红色
+            new THREE.MeshBasicMaterial({ color: 0x00ff00 }), // 绿色
+            new THREE.MeshBasicMaterial({ color: 0x0000ff }), // 蓝色
+            new THREE.MeshBasicMaterial({ color: 0xffff00 }), // 黄色
+            new THREE.MeshBasicMaterial({ color: 0xff00ff }), // 粉红色
+            new THREE.MeshBasicMaterial({ color: 0x00ffff })  // 青色
+        ];
+
+        // 创建立方体
+        var geometry = new THREE.BoxGeometry();
+        var cube = new THREE.Mesh(geometry, materials);
+        scene.add(cube);
+
+        camera.position.z = 5;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // 将鼠标位置归一化到[-1,1]的范围内
+            var mouseXNormalized = (mouseX / window.innerWidth) * 2 - 1;
+            var mouseYNormalized = -(mouseY / window.innerHeight) * 2 + 1;
+
+            // 根据鼠标位置设置立方体颜色
+            var index = Math.floor(Math.random() * 6);
+            cube.material[index].color.setHex(0xffffff);
+
+            // 根据鼠标位置设置立方体旋转角度
+            var rotateX = (mouseXNormalized * Math.PI) / 9.5; // 左侧旋转20度
+            var rotateY = (mouseYNormalized * Math.PI) / 9.5; // 右侧旋转20度
+
+            // 限制旋转角度在[-20°, 20°]范围内
+            rotateX = Math.max(Math.min(rotateX, Math.PI / 9.5), -Math.PI / 9.5);
+            rotateY = Math.max(Math.min(rotateY, Math.PI / 9.5), -Math.PI / 9.5);
+
+            // 设置立方体旋转角度
+            cube.rotation.x = rotateY;
+            cube.rotation.y = rotateX;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
