@@ -131,6 +131,7 @@ const router = useRouter()
 //
 const doUpdate = async (question: Question) => {
   console.log(question)
+  //点击进入管理页面，将题目id传递过去，那边使用route获取id获取题目信息
   router.push({
     path: '/update/question',
     query: {
